@@ -6,7 +6,7 @@ namespace Vousse.DAL.Modeles;
 
 public partial class VousseContext : DbContext
 {
-    public VousseContext()
+    public VousseContext() 
     {
     }
 
