@@ -1,0 +1,28 @@
+[33mcommit 3e1802d9261c67ca51cc107af04033060bbbf267[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32m#12-#13[m[33m, [m[1;31mFrancine-Vousse-API/#12-#13[m[33m)[m
+Author: Hablna <145856383+Hablna@users.noreply.github.com>
+Date:   Tue Mar 25 16:49:09 2025 +0100
+
+    #12 #13 page WPF#12 #13 Ajout du projet WPF et mise à jour de VousseContext
+    
+    - Ajout de l'utilisation de `Microsoft.EntityFrameworkCore` dans `VousseContext.cs`.
+    - Modification du constructeur par défaut de `VousseContext` pour inclure un corps vide.
+    - Mise à jour du fichier de solution `Vousse.sln` pour inclure un nouveau projet WPF nommé `Vousse.WPF`.
+    - Ajout de la configuration de projet pour `Vousse.WPF` dans la section `GlobalSection(ProjectConfigurationPlatforms)` de `Vousse.sln`.
+    - Création du fichier `App.xaml` pour définir l'application WPF avec une ressource de démarrage `MainWindow.xaml`.
+    - Création du fichier `App.xaml.cs` pour définir la logique d'interaction de l'application WPF.
+    - Ajout d'informations d'assembly dans `AssemblyInfo.cs` pour spécifier les emplacements des dictionnaires de ressources.
+    - Création du fichier `MainWindow.xaml` pour définir l'interface utilisateur principale avec un bouton pour choisir un fichier et une zone de texte pour afficher le chemin du fichier sélectionné.
+    - Création du fichier `MainWindow.xaml.cs` pour définir la logique d'interaction de la fenêtre principale, y compris la gestion de l'événement de clic du bouton pour ouvrir une boîte de dialogue de sélection de fichier.
+    - Création du fichier de projet `Vousse.WPF.csproj` pour configurer le projet WPF avec le framework cible .NET 8.0 et activer l'utilisation de WPF.
+
+[33mcommit 7703581cf0a0542284a15498aaff74bf53780df5[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Author: Hablna <145856383+Hablna@users.noreply.github.com>
+Date:   Tue Mar 11 15:41:33 2025 +0100
+
+    Ajoutez des fichiers projet.
+
+[33mcommit 475d13912cf903a616aa6b490a6b8d30d55d0e37[m
+Author: Hablna <145856383+Hablna@users.noreply.github.com>
+Date:   Tue Mar 11 15:41:31 2025 +0100
+
+    Ajouter README.md

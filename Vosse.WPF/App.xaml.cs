@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace Vousse.WPF
+namespace Vosse.WPF
 {
     /// <summary>
     /// Interaction logic for App.xaml
