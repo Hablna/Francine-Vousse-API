@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vousse.DAL", "Vousse.DAL\Vousse.DAL.csproj", "{043D3A90-7A1D-4ADF-8B45-B597EB2C404F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vousse.DAL", "Vousse.DAL\Vousse.DAL.csproj", "{043D3A90-7A1D-4ADF-8B45-B597EB2C404F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vosse.WPF", "Vosse.WPF\Vosse.WPF.csproj", "{FFE10912-1506-47F7-988E-B69AD134037E}"
 EndProject
