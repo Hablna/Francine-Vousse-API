@@ -29,7 +29,7 @@ public partial class VousseContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=BDDprojetHabib;Integrated Security=True;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=BDDprojetHabib;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -53,6 +53,7 @@ public partial class VousseContext : DbContext
             entity.ToTable("billeterie");
 
             entity.Property(e => e.NumeroBillet).HasColumnName("numero_billet");
+            entity.Property(e => e.Age).HasColumnName("age");
             entity.Property(e => e.Civilite)
                 .HasMaxLength(10)
                 .IsUnicode(false)
@@ -66,6 +67,9 @@ public partial class VousseContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("prenom");
+            entity.Property(e => e.TypeTarif)
+                .HasMaxLength(20)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.IdSpectacleNavigation).WithMany(p => p.Billeteries)
                 .HasForeignKey(d => d.IdSpectacle)
@@ -78,7 +82,9 @@ public partial class VousseContext : DbContext
 
             entity.ToTable("planification");
 
-            entity.Property(e => e.DateSpectacle).HasColumnName("date_spectacle");
+            entity.Property(e => e.DateSpectacle)
+                .HasColumnType("datetime")
+                .HasColumnName("date_spectacle");
             entity.Property(e => e.Duree).HasColumnName("duree");
             entity.Property(e => e.IdSpectacle).HasColumnName("idSpectacle");
             entity.Property(e => e.Lieu)
@@ -152,6 +158,9 @@ public partial class VousseContext : DbContext
             entity.Property(e => e.TarifEnfant).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.TarifNormal).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.TarifReduit).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.TypeDeSpectacle)
+                .HasMaxLength(50)
+                .IsUnicode(false);
 
             entity.HasMany(d => d.IdArtistes).WithMany(p => p.IdSpectacles)
                 .UsingEntity<Dictionary<string, object>>(

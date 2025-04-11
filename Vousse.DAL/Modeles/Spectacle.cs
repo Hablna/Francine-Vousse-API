@@ -9,7 +9,7 @@ public partial class Spectacle
 
     public string? TypeDeSpectacle { get; set; }
 
-    public virtual SpectacleParent IdNavigation { get; set; } = null!;
+    public virtual SpectacleParent IdNavigation { get; set; } = null!;  
 
     public virtual ICollection<SpectacleGrouped> IdSpectacleGroupeds { get; set; } = new List<SpectacleGrouped>();
 }
