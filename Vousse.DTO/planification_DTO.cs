@@ -8,7 +8,7 @@ namespace Vousse.DTO
 {
     public class planification_DTO
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public DateTime? dateSpectacle { get; set; }
         public string? lieu { get; set; }
         public int? duree { get; set; }

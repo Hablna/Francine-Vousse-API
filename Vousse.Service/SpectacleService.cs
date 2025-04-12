@@ -17,12 +17,6 @@ namespace Vousse.Service
 
         public bool CreateSpectale(Spectacle_DTO spectacle)
         {
-            // verifier si le spectacle existe déjà
-            // si oui creer une nouvelle planification en prenant en compte les chevauchements
-            // si non d'abord creer le spectacle parent puis la planification
-            // puis tester si chaque ariste existe déjà si oui on ne le cree pas si non on le cree
-            // puis recuperer l'id de chaque artiste et l'ajouter dans la table intermédiaire
-            // on teste si c'est un spectacle groupé, si oui on lit spectacle enfant et spectacle grouped dans la table intermediaire
 
             try
             {
@@ -140,13 +134,14 @@ namespace Vousse.Service
                                 //Table intermédiaire                                    
                                 spectacleGrouped.IdSpectacles.Add(spectacleEnfan);
                                 spectacleEnfan.IdSpectacleGroupeds.Add(spectacleGrouped);
+                                _context.SaveChanges();
 
                             }
                         }
                     }
                     else // j'ajoute l'id du spectacle parent dans le spectacle simple
                         _context.Spectacles.Add(new Spectacle { Id = spectacleParent.Id, TypeDeSpectacle = spectacle.TypeDeSpectacle });
-                    
+                        _context.SaveChanges();
                 }
                 return true;
             }
@@ -158,14 +153,48 @@ namespace Vousse.Service
             
         }
 
-        public IEnumerable<planification_DTO> GetHoraires(Spectacle_DTO spectacle)
+        public IEnumerable<planification_DTO> Getplanifications(int Id)
         {
-            throw new NotImplementedException();
+            try {
+                // Récupérer les planifications du spectacle par son ID
+                var planifications = _context.Planifications
+                    .Where(p => p.IdSpectacle == Id);
+                // Mapper les planifications vers le DTO
+                if (planifications != null)
+                {
+                    return null;
+                }
+                else {
+                    var planificationsDTO = planifications.Select(p => new planification_DTO
+                    {
+                        Id = p.Id,
+                        dateSpectacle = p.DateSpectacle,
+                        lieu = p.Lieu,
+                        duree = p.Duree
+                    }).ToList();
+                    return planificationsDTO;
+                }
+                    
+            }catch(Exception ex)
+            {
+                Console.WriteLine($"message d'erreur : {ex}");
+                return null;
+            }
         }
 
         public IEnumerable<Spectacle_DTO> GetAllSpectacles()
         {
-            throw new NotImplementedException();
+            //return les spectacles
+            var spectacles = _context.SpectacleParents
+                .Select(s => new Spectacle_DTO
+                {
+                    Id = s.Id,
+                    Titre = s.NomSpectacle,
+                    Description = s.Descriptions,
+                    TypeDeSpectacle = s.TypeDeSpectacle
+
+                }).ToList();
+            return spectacles;
         }
     }
 

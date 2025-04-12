@@ -7,7 +7,7 @@ using Vousse.DTO;
 
 namespace Vousse.Service
 {
-    public interface ISpectacleService
+    internal interface ISpectacleService
     {
         IEnumerable<Spectacle_DTO> GetAllSpectacles();
 
@@ -15,7 +15,7 @@ namespace Vousse.Service
         bool CreateSpectale(Spectacle_DTO spectacle);
 
         //recupération de la planification d'un spectacle
-        IEnumerable<planification_DTO> GetHoraires(Spectacle_DTO spectacle);
+        IEnumerable<planification_DTO> Getplanifications(int Id);
 
     }
 }
