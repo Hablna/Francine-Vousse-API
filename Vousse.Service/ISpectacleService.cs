@@ -16,6 +16,7 @@ namespace Vousse.Service
 
         //recupération de la planification d'un spectacle
         IEnumerable<planification_DTO> Getplanifications(int Id);
+        bool CreateBillet(Billeterie_DTO billeterie_DTO);
 
     }
 }

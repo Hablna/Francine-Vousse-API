@@ -196,6 +196,72 @@ namespace Vousse.Service
                 }).ToList();
             return spectacles;
         }
-    }
 
+        public bool CreateBillet(Billeterie_DTO billeterie_DTO)
+        {
+            try
+            {
+                // Vérification de l'existence du spectacle
+                var spectacle = _context.SpectacleParents
+                    .FirstOrDefault(s => s.NomSpectacle == billeterie_DTO.spectacle);
+
+                if (spectacle == null)
+                {
+                    Console.WriteLine($"Le spectacle '{billeterie_DTO.spectacle}' n'existe pas. Veuillez d'abord le créer.");
+                    return false; // Spectacle non trouvé, retour en erreur
+                }
+
+                // Vérifier si le billet existe déjà
+                var billetExist = _context.Billeteries
+                    .FirstOrDefault(b => b.NumeroBillet == billeterie_DTO.numero_billet);
+
+                if (billetExist != null)
+                {
+                    // Si le billet existe déjà, mettre à jour ses informations
+                    billetExist.Civilite = billeterie_DTO.civilite;
+                    billetExist.Nom = billeterie_DTO.nom;
+                    billetExist.Prenom = billeterie_DTO.prenom;
+                    billetExist.TypeTarif = billeterie_DTO.typeTarif;
+                    billetExist.IdSpectacle = spectacle.Id;
+
+                    _context.Billeteries.Update(billetExist);
+                }
+                else
+                {
+                    // Si le billet n'existe pas, le créer
+                    var billet = new Billeterie
+                    {
+                        //problème d'incrémentation de la clé primaire
+                        //NumeroBillet = billeterie_DTO.numero_billet,
+                        Civilite = billeterie_DTO.civilite,
+                        Nom = billeterie_DTO.nom,
+                        Prenom = billeterie_DTO.prenom,
+                        TypeTarif = billeterie_DTO.typeTarif,
+                        IdSpectacle = spectacle.Id
+                    };
+
+                    _context.Billeteries.Add(billet);   
+                }
+
+                _context.SaveChanges();
+
+                return true; // Billet ajouté ou mis à jour avec succès
+            }
+            catch (Exception ex)
+            {
+                // Afficher l'exception interne pour des détails plus spécifiques
+                Console.WriteLine($"Erreur lors de la sauvegarde : {ex.Message}");
+                Console.WriteLine($"Détails internes : {ex.InnerException?.Message}");
+
+                // Vous pouvez également afficher l'exception interne complète pour plus de détails
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException}");
+                }
+
+                return false; // Retourner false en cas d'erreur
+            }
+        }
+
+    }
 }
