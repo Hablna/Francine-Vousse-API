@@ -19,6 +19,8 @@ public partial class VousseContext : DbContext
 
     public virtual DbSet<Billeterie> Billeteries { get; set; }
 
+    public virtual DbSet<BilleterieNew> BilleterieNews { get; set; }
+
     public virtual DbSet<Planification> Planifications { get; set; }
 
     public virtual DbSet<Spectacle> Spectacles { get; set; }
@@ -74,6 +76,31 @@ public partial class VousseContext : DbContext
             entity.HasOne(d => d.IdSpectacleNavigation).WithMany(p => p.Billeteries)
                 .HasForeignKey(d => d.IdSpectacle)
                 .HasConstraintName("FK__billeteri__idSpe__44FF419A");
+        });
+
+        modelBuilder.Entity<BilleterieNew>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Billeter__3214EC073DAB473B");
+
+            entity.ToTable("Billeterie_New");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Civilite)
+                .HasMaxLength(10)
+                .IsUnicode(false);
+            entity.Property(e => e.Nom)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Prenom)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.TypeTarif)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.IdSpectacleNavigation).WithMany(p => p.BilleterieNews)
+                .HasForeignKey(d => d.IdSpectacle)
+                .HasConstraintName("FK_Billeterie_Spectacle");
         });
 
         modelBuilder.Entity<Planification>(entity =>

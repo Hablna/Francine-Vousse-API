@@ -62,7 +62,6 @@ namespace Vousse.Service
                         DateSpectacle = spectacle.Horaire,
                         Lieu = spectacle.Lieu,
                         Duree = spectacle.Duree,
-                        //création de la clé étrangère grâce à la clé primaire de la table spectacle_parent 
                         IdSpectacle = spectacleParent.Id,
                     };
                     _context.Planifications.Add(planification);
@@ -115,12 +114,11 @@ namespace Vousse.Service
                                 Console.WriteLine($"le spectacle enfant '{spectacleEnfant}' n'existe pas, veuillez d'abord le creer");
                             else {
                                 nbrSpectacle++;
-                                
 
                                 //spectacle enfant
                                 var spectacleEnfan = new Spectacle
                                 {
-                                    Id = spectacleEnfantExist.Id
+                                    Id = spectacleEnfantExist.Id,
 
                                 };
 
@@ -259,6 +257,28 @@ namespace Vousse.Service
                     Console.WriteLine($"Inner Exception: {ex.InnerException}");
                 }
 
+                return false; // Retourner false en cas d'erreur
+            }
+        }
+        public bool checkBillet(int idBillet, int idSpectacle)
+        {
+            try
+            {
+                // Vérifier si le billet existe
+                var billet = _context.Billeteries
+                    .FirstOrDefault(b => b.NumeroBillet == idBillet && b.IdSpectacle == idSpectacle);
+                if (billet != null)
+                {
+                    return true; // Billet trouvé
+                }
+                else
+                {
+                    return false; // Billet non trouvé
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erreur lors de la vérification du billet : {ex.Message}");
                 return false; // Retourner false en cas d'erreur
             }
         }

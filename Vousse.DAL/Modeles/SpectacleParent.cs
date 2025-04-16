@@ -21,6 +21,8 @@ public partial class SpectacleParent
 
     public bool? DeconseilleAuxEnfants { get; set; }
 
+    public virtual ICollection<BilleterieNew> BilleterieNews { get; set; } = new List<BilleterieNew>();
+
     public virtual ICollection<Billeterie> Billeteries { get; set; } = new List<Billeterie>();
 
     public virtual ICollection<Planification> Planifications { get; set; } = new List<Planification>();
