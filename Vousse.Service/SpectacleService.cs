@@ -2,6 +2,7 @@
 using Vousse.DTO;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace Vousse.Service
 {
@@ -104,42 +105,72 @@ namespace Vousse.Service
                         List<string> spectaclesEnfants = new List<string>() { spectacle.SpectacleEnfant1, spectacle.SpectacleEnfant2, spectacle.SpectacleEnfant3};
 
                         // on teste pour chaque spectacle enfant si il existe déjà
-                        int nbrSpectacle= 0;
+                        int nbrSpectacle = 0;
                         foreach (var spectacleEnfant in spectaclesEnfants)
                         {
+                            // On teste si le spectacle enfant existe déjà dans la table SpectacleParent
                             var spectacleEnfantExist = _context.SpectacleParents
-                                .FirstOrDefault(s => s.NomSpectacle == spectacleEnfant);
-                            if (spectacleEnfantExist == null)
-                                //on passe à la boucle suivante
-                                Console.WriteLine($"le spectacle enfant '{spectacleEnfant}' n'existe pas, veuillez d'abord le creer");
-                            else {
-                                nbrSpectacle++;
+                                .FirstOrDefault(s => s.NomSpectacle.Trim() == spectacleEnfant);
 
-                                //spectacle enfant
-                                var spectacleEnfan = new Spectacle
+                            if (spectacleEnfantExist != null)
+                            {
+                                // On teste si l'id du spectacle enfant existe dans la table Spectacle
+                                var spectacleEnfantIdExist = _context.Spectacles
+                                    .Any(s => s.Id == spectacleEnfantExist.Id);
+
+                                if (!spectacleEnfantIdExist)
                                 {
-                                    Id = spectacleEnfantExist.Id,
-
-                                };
-
-                                var spectacleGrouped = new SpectacleGrouped
+                                    Console.WriteLine($"Le spectacle '{spectacleEnfant}' n'existe pas. Veuillez d'abord le créer.");
+                                    return false;
+                                }
+                                else
                                 {
-                                    Id = spectacleEnfantExist.Id,
-                                    NombreSpectacle = nbrSpectacle,
-                                };
-                                _context.SpectacleGroupeds.Add(spectacleGrouped);
-                                
-                                //Table intermédiaire                                    
-                                spectacleGrouped.IdSpectacles.Add(spectacleEnfan);
-                                spectacleEnfan.IdSpectacleGroupeds.Add(spectacleGrouped);
-                                _context.SaveChanges();
+                                    nbrSpectacle++;
 
+                                    // Vérifier si une instance de SpectacleGrouped avec le même Id est déjà suivie par le DbContext
+                                    var spectacleGroupedExist = _context.SpectacleGroupeds
+                                        .FirstOrDefault(sg => sg.Id == spectacleParent.Id);
+
+                                    if (spectacleGroupedExist == null)
+                                    {
+                                        // Si elle n'existe pas, créez-la
+                                        var spectacleGroup = new SpectacleGrouped
+                                        {
+                                            Id = spectacleParent.Id,
+                                            NombreSpectacle = nbrSpectacle,
+                                        };
+                                        _context.SpectacleGroupeds.Add(spectacleGroup);
+                                        _context.SaveChanges(); // Sauvegarder le spectacle groupé dans la base de données
+                                    }
+
+                                    // Récupérer l'instance existante du spectacle groupé
+                                    var spectacleGrouped = _context.SpectacleGroupeds
+                                        .FirstOrDefault(sg => sg.Id == spectacleParent.Id);
+
+                                    if (spectacleGrouped != null)
+                                    {
+                                        // Créez un nouveau spectacle enfant
+                                        var spectacleEnfant1 = new Spectacle
+                                        {
+                                            Id = spectacleEnfantExist.Id,
+                                            TypeDeSpectacle = spectacle.TypeDeSpectacle
+                                        };
+
+                                        // Ajouter le spectacle enfant dans la table intermédiaire
+                                        spectacleGrouped.IdSpectacles.Add(spectacleEnfant1);
+                                        spectacleEnfant1.IdSpectacleGroupeds.Add(spectacleGrouped);
+                                        _context.SaveChanges();
+                                    }
+                                }
                             }
                         }
+
                     }
-                    else // j'ajoute l'id du spectacle parent dans le spectacle simple
+                    else {
                         _context.Spectacles.Add(new Spectacle { Id = spectacleParent.Id, TypeDeSpectacle = spectacle.TypeDeSpectacle });
                         _context.SaveChanges();
+                    } // j'ajoute l'id du spectacle parent dans le spectacle simple
+                        
                 }
                 return true;
             }
@@ -260,6 +291,7 @@ namespace Vousse.Service
                 return false; // Retourner false en cas d'erreur
             }
         }
+
         public bool checkBillet(int idBillet, int idSpectacle)
         {
             try
@@ -280,6 +312,25 @@ namespace Vousse.Service
             {
                 Console.WriteLine($"Erreur lors de la vérification du billet : {ex.Message}");
                 return false; // Retourner false en cas d'erreur
+            }
+        }
+
+        public IEnumerable<statistiques_DTO> GetStatistiques(int debutSaison, int finSaison)
+        {
+            try
+            {
+                var result = _context.Database.SqlQueryRaw<statistiques_DTO>(
+                   "SELECT * FROM dbo.GetBilletsVendusParSaison(@AnneeDebut, @AnneeFin)",
+                   new SqlParameter("@AnneeDebut", debutSaison),
+                   new SqlParameter("@AnneeFin", finSaison)
+                ).ToList();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"erreur :{ex.Message}");
+                return null;
             }
         }
 

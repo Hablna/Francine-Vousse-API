@@ -10,6 +10,7 @@ namespace Vousse.Service
     internal interface ISpectacleService
     {
         IEnumerable<Spectacle_DTO> GetAllSpectacles();
+        IEnumerable<statistiques_DTO> GetStatistiques(int debutSaison, int finSaison);
 
         //creer un spectacle
         bool CreateSpectale(Spectacle_DTO spectacle);
@@ -18,6 +19,7 @@ namespace Vousse.Service
         IEnumerable<planification_DTO> Getplanifications(int Id);
         bool CreateBillet(Billeterie_DTO billeterie_DTO);
         bool checkBillet(int idBillet, int idSpectacle);
+        
 
     }
 }
