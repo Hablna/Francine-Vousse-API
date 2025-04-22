@@ -186,43 +186,6 @@ namespace Vousse.Service
             
         }
 
-        public bool testIntermediaire()
-        {
-            try
-            {
-                var spcgr = new SpectacleGrouped
-                {
-                    Id = 5,
-                    NombreSpectacle = 2,
-                };
-                var spc = new Spectacle
-                {
-                    Id = 5,
-                    TypeDeSpectacle = "iyawa",
-                };
-                spcgr.IdSpectacles.Add(spc);
-                spc.IdSpectacleGroupeds.Add(spcgr);
-
-                var spcExist = _context.Spectacles
-                    .FirstOrDefault(s => s.Id == spc.Id);
-
-                var spcgrExist = _context.SpectacleGroupeds
-                    .FirstOrDefault(s => s.Id == spcgr.Id);
-                if (spcgrExist == null) 
-                    _context.SpectacleGroupeds.Add(spcgr);
-                if (spcExist == null)
-                    _context.Spectacles.Add(spc);
-
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"message d'erreur : {ex}");
-                return false;
-
-            }
-        }
 
         public IEnumerable<planification_DTO> Getplanifications(int Id)
         {
