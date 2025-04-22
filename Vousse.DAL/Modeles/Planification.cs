@@ -7,7 +7,7 @@ public partial class Planification
 {
     public int Id { get; set; }
 
-    public DateOnly? DateSpectacle { get; set; }
+    public DateTime? DateSpectacle { get; set; }
 
     public string? Lieu { get; set; }
 
