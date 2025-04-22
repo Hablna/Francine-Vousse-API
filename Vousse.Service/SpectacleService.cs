@@ -128,39 +128,43 @@ namespace Vousse.Service
                                     nbrSpectacle++;
 
                                     // Vérifier si une instance de SpectacleGrouped avec le même Id est déjà suivie par le DbContext
-                                    var spectacleGroupedExist = _context.SpectacleGroupeds
-                                        .FirstOrDefault(sg => sg.Id == spectacleParent.Id);
-
-                                    if (spectacleGroupedExist == null)
+                                    /**var spectacleGroupedExist = _context.SpectacleGroupeds
+                                        .FirstOrDefault(sg => sg.Id == spectacleParent.Id);**/
+                                    
+                                    var spectacleGroup = new SpectacleGrouped
                                     {
-                                        // Si elle n'existe pas, créez-la
-                                        var spectacleGroup = new SpectacleGrouped
-                                        {
-                                            Id = spectacleParent.Id,
-                                            NombreSpectacle = nbrSpectacle,
-                                        };
+                                        Id = spectacleParent.Id,
+                                        NombreSpectacle = nbrSpectacle,
+                                    };
+                               
+                                    var spectacleEnfant1 = new Spectacle
+                                    {
+                                        Id = spectacleEnfantExist.Id,
+                                        TypeDeSpectacle = spectacle.TypeDeSpectacle
+                                    };
+
+                                    var spectacleGroupExist = _context.SpectacleGroupeds
+                                        .FirstOrDefault(sg => sg.Id == spectacleGroup.Id);
+                                    if (spectacleGroupExist == null)
                                         _context.SpectacleGroupeds.Add(spectacleGroup);
-                                        _context.SaveChanges(); // Sauvegarder le spectacle groupé dans la base de données
-                                    }
+                                    else
+                                        spectacleGroup = spectacleGroupExist;
 
-                                    // Récupérer l'instance existante du spectacle groupé
-                                    var spectacleGrouped = _context.SpectacleGroupeds
-                                        .FirstOrDefault(sg => sg.Id == spectacleParent.Id);
-
-                                    if (spectacleGrouped != null)
+                                    var spectacleEnfantExist1 = _context.Spectacles
+                                        .FirstOrDefault(s => s.Id == spectacleEnfantExist.Id);
+                                    if (spectacleEnfantExist1 == null)
                                     {
-                                        // Créez un nouveau spectacle enfant
-                                        var spectacleEnfant1 = new Spectacle
-                                        {
-                                            Id = spectacleEnfantExist.Id,
-                                            TypeDeSpectacle = spectacle.TypeDeSpectacle
-                                        };
-
-                                        // Ajouter le spectacle enfant dans la table intermédiaire
-                                        spectacleGrouped.IdSpectacles.Add(spectacleEnfant1);
-                                        spectacleEnfant1.IdSpectacleGroupeds.Add(spectacleGrouped);
-                                        _context.SaveChanges();
+                                        _context.Spectacles.Add(spectacleEnfant1);
                                     }
+                                    else
+                                    {
+                                        spectacleEnfant1 = spectacleEnfantExist1;
+                                    }
+
+                                    spectacleGroup.IdSpectacles.Add(spectacleEnfant1);
+                                    spectacleEnfant1.IdSpectacleGroupeds.Add(spectacleGroup);
+                                    _context.SaveChanges();
+
                                 }
                             }
                         }
@@ -180,6 +184,44 @@ namespace Vousse.Service
                 return false;
             }
             
+        }
+
+        public bool testIntermediaire()
+        {
+            try
+            {
+                var spcgr = new SpectacleGrouped
+                {
+                    Id = 5,
+                    NombreSpectacle = 2,
+                };
+                var spc = new Spectacle
+                {
+                    Id = 5,
+                    TypeDeSpectacle = "iyawa",
+                };
+                spcgr.IdSpectacles.Add(spc);
+                spc.IdSpectacleGroupeds.Add(spcgr);
+
+                var spcExist = _context.Spectacles
+                    .FirstOrDefault(s => s.Id == spc.Id);
+
+                var spcgrExist = _context.SpectacleGroupeds
+                    .FirstOrDefault(s => s.Id == spcgr.Id);
+                if (spcgrExist == null) 
+                    _context.SpectacleGroupeds.Add(spcgr);
+                if (spcExist == null)
+                    _context.Spectacles.Add(spc);
+
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"message d'erreur : {ex}");
+                return false;
+
+            }
         }
 
         public IEnumerable<planification_DTO> Getplanifications(int Id)
