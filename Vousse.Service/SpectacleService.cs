@@ -102,6 +102,7 @@ namespace Vousse.Service
                         !string.IsNullOrEmpty(spectacle.SpectacleEnfant1) ||
                         !string.IsNullOrEmpty(spectacle.SpectacleEnfant1**/)
                     {
+
                         List<string> spectaclesEnfants = new List<string>() { spectacle.SpectacleEnfant1, spectacle.SpectacleEnfant2, spectacle.SpectacleEnfant3};
 
                         // on teste pour chaque spectacle enfant si il existe déjà
