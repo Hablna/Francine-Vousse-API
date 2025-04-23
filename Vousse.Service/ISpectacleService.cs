@@ -7,7 +7,7 @@ using Vousse.DTO;
 
 namespace Vousse.Service
 {
-    internal interface ISpectacleService
+    public interface ISpectacleService
     {
         IEnumerable<Spectacle_DTO> GetAllSpectacles();
         IEnumerable<statistiques_DTO> GetStatistiques(int debutSaison, int finSaison);
@@ -18,7 +18,7 @@ namespace Vousse.Service
         //recupération de la planification d'un spectacle
         IEnumerable<planification_DTO> Getplanifications(int Id);
         bool CreateBillet(Billeterie_DTO billeterie_DTO);
-        bool checkBillet(int idBillet, int idSpectacle);
+        bool checkBillet(billetExistence_DTO billetExistence_DTO);
         
 
     }

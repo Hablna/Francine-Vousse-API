@@ -1,58 +1,56 @@
 ﻿using Vousse.DTO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Vousse.DAL.Modeles;
-using System.Collections.Generic;
-using System.Linq;
+using Vousse.Service;
 
 namespace Vousse.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class SpectaclesController : ControllerBase
     {
-        private readonly VousseContext _context;
+        private readonly ISpectacleService _spectacleService;
 
-        public SpectaclesController(VousseContext context)
+        public SpectaclesController(ISpectacleService spectacleService)
         {
-            _context = context;
+            _spectacleService = spectacleService;
         }
 
-        // POST: api/spectacles
         [HttpPost]
-        public IActionResult CreateSpectacle([FromBody] Spectacle_DTO spectacle)
+        public bool CreateSpectacle(Spectacle_DTO spectacle)
         {
-            if (spectacle == null)
-            {
-                return BadRequest("Le spectacle ne peut pas être nul.");
-            }
-
-            //TODO _context.Spectacles.Add(spectacle);
-            _context.SaveChanges();
-
-            return CreatedAtAction(nameof(GetSpectacleById), new { id = spectacle.Id }, spectacle);
+            return _spectacleService.CreateSpectale(spectacle);
         }
 
-        // GET: api/spectacles
+        [HttpPost]
+        public bool CreateBillet(Billeterie_DTO billeterie_DTO)
+        {
+            return _spectacleService.CreateBillet(billeterie_DTO);
+        }
+
+        [HttpPost]
+        public bool CheckBillet(billetExistence_DTO billetExistence_DTO)
+        {
+            return _spectacleService.checkBillet(billetExistence_DTO);
+        }
+
         [HttpGet]
-        public ActionResult<IEnumerable<Spectacle>> GetSpectacles()
+        public IEnumerable<Spectacle_DTO> GetAllSpectacles()
         {
-            var spectacles = _context.Spectacles.ToList();
-            return Ok(spectacles);
+            return _spectacleService.GetAllSpectacles();
         }
-       
-        // GET: api/spectacles/{id}
-        [HttpGet("{id}")]
-        public ActionResult<Spectacle> GetSpectacleById(int id)
+
+        [HttpGet]
+        public IEnumerable<planification_DTO> GetPlanifications(int id)
         {
-            var spectacle = _context.Spectacles.Find(id);
-
-            if (spectacle == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(spectacle);
+            return _spectacleService.Getplanifications(id);
         }
+
+        [HttpGet]
+        public IEnumerable<statistiques_DTO> GetStatistiques(int debutSaison, int finSaison)
+        {
+            return _spectacleService.GetStatistiques(debutSaison, finSaison);
+        }
+        //reste celui des chevauchements
     }
 }
