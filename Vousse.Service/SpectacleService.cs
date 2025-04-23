@@ -196,9 +196,6 @@ namespace Vousse.Service
                 // Mapper les planifications vers le DTO
                 if (planifications != null)
                 {
-                    return null;
-                }
-                else {
                     var planificationsDTO = planifications.Select(p => new planification_DTO
                     {
                         Id = p.Id,
@@ -207,6 +204,9 @@ namespace Vousse.Service
                         duree = p.Duree
                     }).ToList();
                     return planificationsDTO;
+                }
+                else {
+                    return null;
                 }
                     
             }catch(Exception ex)
@@ -297,13 +297,13 @@ namespace Vousse.Service
             }
         }
 
-        public bool checkBillet(int idBillet, int idSpectacle)
+        public bool checkBillet(billetExistence_DTO billetExistence_DTO)
         {
             try
             {
                 // Vérifier si le billet existe
                 var billet = _context.Billeteries
-                    .FirstOrDefault(b => b.NumeroBillet == idBillet && b.IdSpectacle == idSpectacle);
+                    .FirstOrDefault(b => b.NumeroBillet == billetExistence_DTO.IdBillet && b.IdSpectacle == billetExistence_DTO.IdSpectacle);
                 if (billet != null)
                 {
                     return true; // Billet trouvé
