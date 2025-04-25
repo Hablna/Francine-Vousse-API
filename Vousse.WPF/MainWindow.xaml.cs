@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -11,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using Vousse.DTO;
 
 namespace Vousse.WPF
 {
@@ -27,6 +29,7 @@ namespace Vousse.WPF
         private void importSpectacle(object sender, RoutedEventArgs e)
         {
             //definir le client API (service) pour la communication avec le serveur
+            var client = new Vousse.WPF.spectacle.Client();
 
             // Load the CSV file
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -80,7 +83,25 @@ namespace Vousse.WPF
                     }
                     //lier le datatable au datagrid
                     CsvDataGrid.ItemsSource = dt.DefaultView;
+
+                    var billetExist = new billetExistence_DTO
+                    {
+                        IdBillet = 3,
+                        IdSpectacle = 6,
+                    };
+
+                    var result = client.ApiSpectaclesCheckBillet(billetExist);
+                    if (result == true)
+                    {
+                        txtResultat.Text = $"le billet N°{billetExist.IdBillet} existe";
+                    }
+                    else
+                    {
+                        txtResultat.Text = $"Le billet N°{billetExist.IdBillet} n'existe pas";
+                    }
+
                 }
+
             }
         }
     }

@@ -98,12 +98,16 @@ namespace Vousse.Service
                     }
 
                     //gestion des spectacles simples et groupés
-                    if (!string.IsNullOrEmpty(spectacle.SpectacleEnfant1) /**||
-                        !string.IsNullOrEmpty(spectacle.SpectacleEnfant1) ||
+                    if (!string.IsNullOrEmpty(spectacle.SpectacleEnfant1) /**
                         !string.IsNullOrEmpty(spectacle.SpectacleEnfant1**/)
                     {
 
-                        List<string> spectaclesEnfants = new List<string>() { spectacle.SpectacleEnfant1, spectacle.SpectacleEnfant2, spectacle.SpectacleEnfant3};
+                        List<string> spectaclesEnfants = new List<string>() { spectacle.SpectacleEnfant1};
+                        if(!string.IsNullOrEmpty(spectacle.SpectacleEnfant2))
+                            spectaclesEnfants.Add(spectacle.SpectacleEnfant2);
+
+                        if(!string.IsNullOrEmpty(spectacle.SpectacleEnfant2))
+                            spectaclesEnfants.Add(spectacle.SpectacleEnfant2);
 
                         // on teste pour chaque spectacle enfant si il existe déjà
                         int nbrSpectacle = 0;

@@ -9,5 +9,7 @@
     <Grid>
         <DataGrid x:Name="CsvDataGrid" Margin="134,72,103,73" />
         <Button Content="importer le csv" Margin="376,18,314,367" Click="importSpectacle"/>
+        <TextBlock Name="txtResultat" Width="200" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,382,0,0" TextAlignment="Center" FontWeight="Bold"/>
+
     </Grid>
 </Window>
