@@ -366,7 +366,7 @@ FodyWeavers.xsd
 test/
 test.API/
 test2.WPF/
-Vousse.WPF/
+# Vousse.WPF/
 billetTest.WPF/
 Vousse.Service/ITestService.cs
 Vousse.Service/testService.cs
