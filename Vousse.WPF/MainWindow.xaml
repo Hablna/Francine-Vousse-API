@@ -5,11 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Vousse.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Import CSV - Billetterie et Spectacles" Height="878" Width="1300">
     <Grid>
-        <DataGrid x:Name="CsvDataGrid" Margin="134,72,103,73" />
-        <Button Content="importer le csv" Margin="376,18,314,367" Click="importSpectacle"/>
-        <TextBlock Name="txtResultat" Width="200" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,382,0,0" TextAlignment="Center" FontWeight="Bold"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="61*"/>
+            <ColumnDefinition Width="264*"/>
+        </Grid.ColumnDefinitions>
+        <TabControl Margin="10,10,10,150" Grid.ColumnSpan="2">
+            <!-- Onglet spectacle -->
+            <TabItem Header="Import des spectacles">
+                <StackPanel>
+                    <!-- DataGrid pour afficher les spectacles -->
+                    <DataGrid x:Name="CsvSpectacleDataGrid" Height="450" Margin="10" />
+                    <!-- Bouton pour importer le fichier CSV des spectacles -->
+                    <Button Content="Importer le CSV de spectacle" Margin="10" Height="30" Click="ImportSpectacleCsv" />
+                    <!-- block reponse de l'importation de spectacle-->
+                    <TextBlock Name="reponseSpectacle" TextWrapping="Wrap"  Height="71" Width="429"/>
+
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="Import Billetterie">
+                <StackPanel>
+                    <!-- DataGrid pour afficher la billetterie -->
+                    <DataGrid x:Name="CsvBilletterieDataGrid" Height="450" Margin="10" />
+                    <!-- Bouton pour importer le fichier CSV de la billetterie -->
+                    <Button Content="Importer Billetterie CSV" Margin="10" Height="30" Click="ImportBilletterieCsv" />
+                    <!-- block reponse de l'importation de billeterie-->
+                    <TextBlock Name="reponseBilleterie"  TextWrapping="Wrap" Height="71" Width="673"/>
+
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        <!-- ProgressBar pour afficher la progression de l'importation -->
+        <ProgressBar x:Name="progressBar" Margin="234,749,469,93" IsIndeterminate="True" Grid.Column="1" Foreground="Blue"/>
+
+        <!-- Label pour afficher le pourcentage de progression -->
+        <TextBlock x:Name="progressText" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="601,751,0,0" Grid.Column="1" RenderTransformOrigin="1.355,0.548" />
+
 
     </Grid>
 </Window>
