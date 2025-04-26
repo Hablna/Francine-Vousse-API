@@ -20,6 +20,5 @@ namespace Vousse.Service
         bool CreateBillet(Billeterie_DTO billeterie_DTO);
         bool checkBillet(billetExistence_DTO billetExistence_DTO);
         
-
     }
 }

@@ -1,0 +1,472 @@
+﻿{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Vousse.API",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/Spectacles/CreateSpectacle": {
+      "post": {
+        "tags": [
+          "Spectacles"
+        ],
+        "operationId": "CreateSpectacle",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Spectacle_DTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Spectacle_DTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Spectacle_DTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Spectacles/CreateBillet": {
+      "post": {
+        "tags": [
+          "Spectacles"
+        ],
+        "operationId": "CreateBillet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Billeterie_DTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Billeterie_DTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Billeterie_DTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Spectacles/CheckBillet": {
+      "post": {
+        "tags": [
+          "Spectacles"
+        ],
+        "operationId": "CheckBillet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/billetExistence_DTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/billetExistence_DTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/billetExistence_DTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Spectacles/GetAllSpectacles": {
+      "get": {
+        "tags": [
+          "Spectacles"
+        ],
+        "operationId": "GetAllSpectacles",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Spectacle_DTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Spectacle_DTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Spectacle_DTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Spectacles/GetPlanifications": {
+      "get": {
+        "tags": [
+          "Spectacles"
+        ],
+        "operationId": "GetPlanifications",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/planification_DTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/planification_DTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/planification_DTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Spectacles/GetStatistiques": {
+      "get": {
+        "tags": [
+          "Spectacles"
+        ],
+        "operationId": "GetStatistiques",
+        "parameters": [
+          {
+            "name": "debutSaison",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "finSaison",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/statistiques_DTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/statistiques_DTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/statistiques_DTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Billeterie_DTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "numero_billet": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "civilite": {
+            "type": "string",
+            "nullable": true
+          },
+          "nom": {
+            "type": "string",
+            "nullable": true
+          },
+          "prenom": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeTarif": {
+            "type": "string",
+            "nullable": true
+          },
+          "spectacle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Spectacle_DTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "titre": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "artistes": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "typeDeSpectacle": {
+            "type": "string",
+            "nullable": true
+          },
+          "duree": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tarifPlein": {
+            "type": "number",
+            "format": "double"
+          },
+          "tarifReduit": {
+            "type": "number",
+            "format": "double"
+          },
+          "tarifEnfant": {
+            "type": "number",
+            "format": "double"
+          },
+          "horaire": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lieu": {
+            "type": "string",
+            "nullable": true
+          },
+          "spectacleEnfant1": {
+            "type": "string",
+            "nullable": true
+          },
+          "spectacleEnfant2": {
+            "type": "string",
+            "nullable": true
+          },
+          "spectacleEnfant3": {
+            "type": "string",
+            "nullable": true
+          },
+          "deconseilleAuxEnfants": {
+            "type": "boolean"
+          }
+        }
+      },
+      "billetExistence_DTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "idBillet": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idSpectacle": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "planification_DTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dateSpectacle": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lieu": {
+            "type": "string",
+            "nullable": true
+          },
+          "duree": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "idSpectacle": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "statistiques_DTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nomSpectacle": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreBilletsPlein": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nombreBilletsReduit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nombreBilletsEnfant": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nombreTotalBillets": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    }
+  }
+}
