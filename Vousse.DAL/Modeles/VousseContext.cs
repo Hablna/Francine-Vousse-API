@@ -19,8 +19,6 @@ public partial class VousseContext : DbContext
 
     public virtual DbSet<Billeterie> Billeteries { get; set; }
 
-    public virtual DbSet<BilleterieNew> BilleterieNews { get; set; }
-
     public virtual DbSet<Planification> Planifications { get; set; }
 
     public virtual DbSet<Spectacle> Spectacles { get; set; }
@@ -29,7 +27,10 @@ public partial class VousseContext : DbContext
 
     public virtual DbSet<SpectacleParent> SpectacleParents { get; set; }
 
-   
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=BDDprojetHabib;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Artiste>(entity =>
@@ -47,57 +48,37 @@ public partial class VousseContext : DbContext
 
         modelBuilder.Entity<Billeterie>(entity =>
         {
-            entity.HasKey(e => e.NumeroBillet);
+            entity.HasKey(e => e.NumeroBillet).HasName("PK__billeter__EDF3A0DEA11C8025");
 
             entity.ToTable("billeterie");
 
-            entity.Property(e => e.NumeroBillet).HasColumnName("numero_billet");
-            entity.Property(e => e.Age).HasColumnName("age");
+            entity.Property(e => e.NumeroBillet)
+                .ValueGeneratedNever()
+                .HasColumnName("numero_billet");
             entity.Property(e => e.Civilite)
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("civilite");
             entity.Property(e => e.IdSpectacle).HasColumnName("idSpectacle");
             entity.Property(e => e.Nom)
-                .HasMaxLength(50)
+                .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("nom");
             entity.Property(e => e.Prenom)
-                .HasMaxLength(50)
+                .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("prenom");
+            entity.Property(e => e.Prix)
+                .HasColumnType("decimal(10, 2)")
+                .HasColumnName("prix");
             entity.Property(e => e.TypeTarif)
                 .HasMaxLength(20)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .HasColumnName("typeTarif");
 
             entity.HasOne(d => d.IdSpectacleNavigation).WithMany(p => p.Billeteries)
                 .HasForeignKey(d => d.IdSpectacle)
-                .HasConstraintName("FK__billeteri__idSpe__44FF419A");
-        });
-
-        modelBuilder.Entity<BilleterieNew>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Billeter__3214EC073DAB473B");
-
-            entity.ToTable("Billeterie_New");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.Civilite)
-                .HasMaxLength(10)
-                .IsUnicode(false);
-            entity.Property(e => e.Nom)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.Prenom)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.TypeTarif)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-
-            entity.HasOne(d => d.IdSpectacleNavigation).WithMany(p => p.BilleterieNews)
-                .HasForeignKey(d => d.IdSpectacle)
-                .HasConstraintName("FK_Billeterie_Spectacle");
+                .HasConstraintName("fk_spectacle");
         });
 
         modelBuilder.Entity<Planification>(entity =>

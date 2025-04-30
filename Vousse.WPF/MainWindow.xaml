@@ -38,7 +38,7 @@
             </TabItem>
         </TabControl>
         <!-- ProgressBar pour afficher la progression de l'importation -->
-        <ProgressBar x:Name="progressBar" Margin="234,749,469,93" IsIndeterminate="True" Grid.Column="1" Foreground="Blue"/>
+        <ProgressBar x:Name="progressBar" Margin="234,749,469,93" IsIndeterminate="True" Grid.Column="1" Foreground="GreenYellow"/>
 
         <!-- Label pour afficher le pourcentage de progression -->
         <TextBlock x:Name="progressText" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="601,751,0,0" Grid.Column="1" RenderTransformOrigin="1.355,0.548" />
