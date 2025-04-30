@@ -371,3 +371,9 @@ billetTest.WPF/
 Vousse.Service/ITestService.cs
 Vousse.Service/testService.cs
 Vousse.DTO/testBilleterie.cs
+
+# securité app settings
+Vousse.DAL/appsettings.json
+Vousse.API/appsettings.json
+Vousse.API/appsettings.Development.json
+Vousse.WPF/appsettings.json

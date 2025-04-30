@@ -10,7 +10,7 @@ namespace Vousse.DAL.Modeles;
 
 public partial class VousseContext
 {
-    /**protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, false);
         var config = builder.Build();
@@ -18,5 +18,5 @@ public partial class VousseContext
         {
             optionsBuilder.UseSqlServer(config.GetConnectionString("Vousse"));
         }
-    }**/
+    }
 }

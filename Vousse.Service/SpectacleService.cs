@@ -344,7 +344,7 @@ namespace Vousse.Service
             }
         }
 
-        public IEnumerable<Spectacleschevauches_DTO> DetecterChevauchements()
+        public IEnumerable<Spectacleschevauches_DTO> GetChevauchements()
         {
             try
             {
