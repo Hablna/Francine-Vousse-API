@@ -51,6 +51,11 @@ namespace Vousse.API.Controllers
         {
             return _spectacleService.GetStatistiques(debutSaison, finSaison);
         }
+        [HttpGet]
+        public IEnumerable<Spectacleschevauches_DTO> GetChevauchements()
+        {
+            return _spectacleService.GetChevauchements();
+        }
         //reste celui des chevauchements
     }
 }

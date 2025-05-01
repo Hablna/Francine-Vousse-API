@@ -43,7 +43,7 @@ namespace Vousse.WPF
                 Title = "selectionner un fichier csv"
             };
 
-           
+
 
             //si le fichier est selectionné
             if (openFileDialog.ShowDialog() == true)
@@ -90,7 +90,7 @@ namespace Vousse.WPF
 
                         //ajouter les valeurs dans le datatable jusqu'à 16
                         dt.Rows.Add(count, values[1], values[2], values[3], values[4], values[5], values[6], values[7], values[8], values[9], values[10], values[11], values[12], values[13], values[14], values[15], values[16]);
-                        
+
                         //si la valeur artiste est null
                         if (string.IsNullOrEmpty(values[3])) values[3] = "RAS";
                         if (string.IsNullOrEmpty(values[4])) values[4] = "RAS";
@@ -129,7 +129,7 @@ namespace Vousse.WPF
                         }
                         //lier le datatable au datagrid
                         CsvSpectacleDataGrid.ItemsSource = dt.DefaultView;
-                        
+
                     }
 
                     progressBar.Visibility = Visibility.Hidden;
@@ -198,6 +198,7 @@ namespace Vousse.WPF
                             nom = values[2],
                             prenom = values[3],
                             spectacle = values[4],
+                            prix = decimal.Parse(values[7]),
                             typeTarif = values[8]
                         };
                         try
@@ -230,6 +231,21 @@ namespace Vousse.WPF
                 }
             }
 
+        }
+        private void CheckChevauchements(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var client = new Vousse.WPF.spectacle.Client();
+
+                var chevauchements = client.ApiSpectaclesGetChevauchements();
+
+                ChevauchementsDataGrid.ItemsSource = chevauchements;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de la récupération des chevauchements : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

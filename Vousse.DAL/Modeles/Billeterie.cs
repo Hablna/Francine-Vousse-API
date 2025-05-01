@@ -15,9 +15,9 @@ public partial class Billeterie
 
     public int? IdSpectacle { get; set; }
 
-    public string? TypeTarif { get; set; }
+    public decimal? Prix { get; set; }
 
-    public int? Age { get; set; }
+    public string? TypeTarif { get; set; }
 
     public virtual SpectacleParent? IdSpectacleNavigation { get; set; }
 }

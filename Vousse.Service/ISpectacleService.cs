@@ -19,6 +19,8 @@ namespace Vousse.Service
         IEnumerable<planification_DTO> Getplanifications(int Id);
         bool CreateBillet(Billeterie_DTO billeterie_DTO);
         bool checkBillet(billetExistence_DTO billetExistence_DTO);
-        
+        IEnumerable<Spectacleschevauches_DTO> GetChevauchements();
+
+
     }
 }

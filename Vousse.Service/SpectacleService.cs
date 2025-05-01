@@ -261,6 +261,7 @@ namespace Vousse.Service
                     billetExist.Nom = billeterie_DTO.nom;
                     billetExist.Prenom = billeterie_DTO.prenom;
                     billetExist.TypeTarif = billeterie_DTO.typeTarif;
+                    billetExist.Prix = billeterie_DTO.prix;
                     billetExist.IdSpectacle = spectacle.Id;
 
                     _context.Billeteries.Update(billetExist);
@@ -270,11 +271,11 @@ namespace Vousse.Service
                     // Si le billet n'existe pas, le créer
                     var billet = new Billeterie
                     {
-                        //problème d'incrémentation de la clé primaire
-                        //NumeroBillet = billeterie_DTO.numero_billet,
+                        NumeroBillet = billeterie_DTO.numero_billet,
                         Civilite = billeterie_DTO.civilite,
                         Nom = billeterie_DTO.nom,
                         Prenom = billeterie_DTO.prenom,
+                        Prix = billeterie_DTO.prix,
                         TypeTarif = billeterie_DTO.typeTarif,
                         IdSpectacle = spectacle.Id
                     };
@@ -336,6 +337,47 @@ namespace Vousse.Service
                 ).ToList();
 
                 return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"erreur :{ex.Message}");
+                return null;
+            }
+        }
+
+        public IEnumerable<Spectacleschevauches_DTO> GetChevauchements()
+        {
+            try
+            {
+                var results = _context.Database.SqlQueryRaw<chevauchements_DTO>(
+                    "EXEC DetecterChevauchements"
+                ).ToList();
+                var titres = new List<Spectacleschevauches_DTO>();
+
+                // Récupération des titres des spectacles 1 et 2 en une seule requête
+                var spectacleIds = results.Select(r => r.spectacle1_ID)
+                                        .Union(results.Select(r => r.spectacle2_ID))
+                                        .Distinct()
+                                        .ToList();
+
+                // Récupérer tous les titres des spectacles associés
+                var spectacles = _context.SpectacleParents
+                    .Where(s => spectacleIds.Contains(s.Id))
+                    .ToDictionary(s => s.Id, s => s.NomSpectacle);
+
+                // Assigner les titres des spectacles à chaque résultat
+                foreach (var result in results)
+                {
+                    var titre = new Spectacleschevauches_DTO
+                    {
+                        Titre1 = spectacles.GetValueOrDefault(result.spectacle1_ID),
+                        Titre2 = spectacles.GetValueOrDefault(result.spectacle2_ID)
+                    };
+
+                    titres.Add(titre);
+                }
+
+                return titres;
             }
             catch (Exception ex)
             {
