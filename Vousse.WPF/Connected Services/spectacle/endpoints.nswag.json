@@ -296,6 +296,45 @@
           }
         }
       }
+    },
+    "/api/Spectacles/GetChevauchements": {
+      "get": {
+        "tags": [
+          "Spectacles"
+        ],
+        "operationId": "GetChevauchements",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Spectacleschevauches_DTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Spectacleschevauches_DTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Spectacleschevauches_DTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -319,6 +358,10 @@
           "prenom": {
             "type": "string",
             "nullable": true
+          },
+          "prix": {
+            "type": "number",
+            "format": "double"
           },
           "typeTarif": {
             "type": "string",
@@ -395,6 +438,20 @@
           },
           "deconseilleAuxEnfants": {
             "type": "boolean"
+          }
+        }
+      },
+      "Spectacleschevauches_DTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "titre1": {
+            "type": "string",
+            "nullable": true
+          },
+          "titre2": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

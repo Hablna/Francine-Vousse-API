@@ -377,3 +377,6 @@ Vousse.DAL/appsettings.json
 Vousse.API/appsettings.json
 Vousse.API/appsettings.Development.json
 Vousse.WPF/appsettings.json
+/Vousse.WPF/appsettings.json
+/Vousse.API/appsettings.json
+/Vousse.DAL/appsettings.json

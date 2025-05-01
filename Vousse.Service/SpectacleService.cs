@@ -261,6 +261,7 @@ namespace Vousse.Service
                     billetExist.Nom = billeterie_DTO.nom;
                     billetExist.Prenom = billeterie_DTO.prenom;
                     billetExist.TypeTarif = billeterie_DTO.typeTarif;
+                    billetExist.Prix = billeterie_DTO.prix;
                     billetExist.IdSpectacle = spectacle.Id;
 
                     _context.Billeteries.Update(billetExist);
