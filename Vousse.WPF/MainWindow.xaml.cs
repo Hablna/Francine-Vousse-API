@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Microsoft.Win32;
 using Vousse.DTO;
 
@@ -71,11 +72,6 @@ namespace Vousse.WPF
                 //lecture du fichier csv
                 using (StreamReader sr = new StreamReader(openFileDialog.FileName))
                 {
-
-                    // Afficher la ProgressBar
-                    progressBar.Visibility = Visibility.Visible;
-                    progressText.Visibility = Visibility.Visible;
-
                     while (!sr.EndOfStream)
                     {
                         var line = sr.ReadLine();
@@ -83,6 +79,13 @@ namespace Vousse.WPF
 
                         if (isFirstLine)
                         {
+                            if (values.Length != 17)
+                            {
+                                MessageBox.Show("Veuillez choisir un CSV valide");
+                                //arrêt du processus
+                                return;
+                            }
+
                             isFirstLine = false;
                             continue;
                         }
@@ -170,13 +173,14 @@ namespace Vousse.WPF
                 dt.Columns.Add("prix", typeof(string));
                 dt.Columns.Add("Type de tarif", typeof(string));
 
+                List<Billeterie_DTO> billets = new List<Billeterie_DTO>();
+
                 //lecture du fichier csv
                 using (StreamReader sr = new StreamReader(openFileDialog.FileName))
                 {
                     //pour sauter la première ligne
-                    List<string> errorMessages = new List<string>();
+                    
                     bool isFirstLine = true;
-                    int count = 0;
                     while (!sr.EndOfStream)
                     {
                         var line = sr.ReadLine();
@@ -184,50 +188,87 @@ namespace Vousse.WPF
 
                         if (isFirstLine)
                         {
+                            if (values.Length != 9)
+                            {
+                                MessageBox.Show("Veuillez choisir un CSV valide");
+                                //arrêt du processus
+                                return;
+                            }
+
                             isFirstLine = false;
                             continue;
                         }
-                        count++;
+
                         //ajouter les valeurs dans le datatable jusqu'à 16
                         dt.Rows.Add(values[0], values[1], values[2], values[3], values[4], values[5], values[6], values[7], values[8]);
 
-                        var billet = new Billeterie_DTO
+                        if (int.TryParse(values[0], out int numero_billet) && decimal.TryParse(values[7], out decimal prix))
                         {
-                            numero_billet = int.Parse(values[0]),
-                            civilite = values[1],
-                            nom = values[2],
-                            prenom = values[3],
-                            spectacle = values[4],
-                            prix = decimal.Parse(values[7]),
-                            typeTarif = values[8]
-                        };
-                        try
-                        {
-                            var resultBillet = client.ApiSpectaclesCreateBillet(billet);
-                            if (!resultBillet)
+                            billets.Add( new Billeterie_DTO
                             {
-                                errorMessages.Add($"Erreur lors de la création du billet N°{billet.numero_billet}");
+                                numero_billet = numero_billet,
+                                civilite = values[1],
+                                nom = values[2],
+                                prenom = values[3],
+                                spectacle = values[4],
+                                prix = prix,
+                                typeTarif = values[8]
                             }
+                            );
                         }
-                        catch (Exception ex)
+                    }
+                    CsvBilletterieDataGrid.ItemsSource = dt.DefaultView;
+                    // message de confirmation
+                    reponseBilleterie.Text = $"Nombre de billets à créer: {billets.Count}. Confirmez pour enregistrer.";
+
+                    var confirmation = MessageBox.Show($"Voulez- vous créer {billets.Count} billets ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (confirmation == MessageBoxResult.Yes)
+                    {
+                        List<string> errorMessages = new List<string>();
+
+                        int successCount = 0;
+
+                        progressBar.Value = 0;
+                        progressBar.Maximum = billets.Count;
+
+                        for (int i = 0; i < billets.Count; i++)
                         {
-                            errorMessages.Add($"Erreur au niveau du billet {billet.numero_billet} : {ex.Message}");
+                            var billet = billets[i];
+                            try
+                            {
+                                var result = client.ApiSpectaclesCreateBillet(billet);
+                                if (!result)
+                                {
+                                    errorMessages.Add($"Échec création billet N°{billet.numero_billet}");
+                                }
+                                else
+                                {
+                                    successCount++;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                errorMessages.Add($"Erreur billet N°{billet.numero_billet} : {ex.Message}");
+                            }
 
+                            // Mise à jour de la ProgressBar
+                            progressBar.Value = i + 1;
+                            progressLabel.Text = $"Traitement du billet {i + 1}/{billets.Count}";
+                            DoEvents(); // pour rafraîchir l'interface à chaque tour
                         }
-                        //lier le datatable au datagrid
-                        CsvBilletterieDataGrid.ItemsSource = dt.DefaultView;
 
 
+                        //gestion des reponses
+                        if (errorMessages.Count > 0)
+                        {
+                            reponseBilleterie.Text = $"Billets créés : {successCount}. Erreurs :\n" + string.Join("\n", errorMessages);
+                        }
+                        else
+                        {
+                            reponseBilleterie.Text = $"Tous les billets ({successCount}) ont été enregistrés avec succès.";
+                        }
                     }
-                    //gestion d'erreur
-                    if (errorMessages.Count > 0)
-                    {
-                        reponseBilleterie.Text = "Erreurs lors de la création des billets :\n" + string.Join("\n", errorMessages);
-                    }
-                    else
-                    {
-                        reponseBilleterie.Text = "Tous les billets ont été créés avec succès.";
-                    }
+
                 }
             }
 
@@ -247,5 +288,19 @@ namespace Vousse.WPF
                 MessageBox.Show($"Erreur lors de la récupération des chevauchements : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        
+        private void DoEvents()
+        {
+            DispatcherFrame frame = new DispatcherFrame();
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Render, new DispatcherOperationCallback(delegate (object parameter)
+            {
+                frame.Continue = false;
+                return null;
+            }), null);
+            Dispatcher.PushFrame(frame);
+        }
+
     }
 }
+

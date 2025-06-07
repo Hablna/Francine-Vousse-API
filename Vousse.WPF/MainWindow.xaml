@@ -22,6 +22,7 @@
                     <!-- block reponse de l'importation de spectacle-->
                     <TextBlock Name="reponseSpectacle" TextWrapping="Wrap"  Height="71" Width="429"/>
 
+
                 </StackPanel>
             </TabItem>
 
@@ -33,6 +34,8 @@
                     <Button Content="Importer Billetterie CSV" Margin="10" Height="30" Click="ImportBilletterieCsv" />
                     <!-- block reponse de l'importation de billeterie-->
                     <TextBlock Name="reponseBilleterie"  TextWrapping="Wrap" Height="71" Width="673"/>
+                    <ProgressBar x:Name="progressBar" Minimum="0" Maximum="100" Height="100" Width="320"/>
+                    <TextBlock x:Name="progressLabel" Margin="10" />
 
                 </StackPanel>
             </TabItem>
@@ -46,12 +49,7 @@
                 </StackPanel>
             </TabItem>
         </TabControl>
-        <!-- ProgressBar pour afficher la progression de l'importation -->
-        <ProgressBar x:Name="progressBar" Margin="234,749,469,93" IsIndeterminate="True" Grid.Column="1" Foreground="GreenYellow"/>
-
-        <!-- Label pour afficher le pourcentage de progression -->
-        <TextBlock x:Name="progressText" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="601,751,0,0" Grid.Column="1" RenderTransformOrigin="1.355,0.548" />
-
+        
 
     </Grid>
 </Window>
