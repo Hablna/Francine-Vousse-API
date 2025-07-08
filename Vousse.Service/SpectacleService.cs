@@ -325,6 +325,7 @@ namespace Vousse.Service
             }
         }
 
+        
         public IEnumerable<statistiques_DTO> GetStatistiques(int debutSaison, int finSaison)
         {
             try
@@ -344,5 +345,36 @@ namespace Vousse.Service
             }
         }
 
+        public TotalBillets_DTO GetTotalBillets(int Id)
+        {
+            try
+            {
+                var nomSpectacle = _context.SpectacleParents
+                    .Where(sp => sp.Id == Id)
+                    .Select(sp => sp.NomSpectacle)
+                    .FirstOrDefault();
+
+                var billets = _context.Billeteries
+                    .Where(b => b.IdSpectacle == Id).Count();
+
+                if (billets == null)
+                {
+                    return null;
+                }
+
+                var TotaBilletsDTO = new TotalBillets_DTO
+                {
+                    id = Id,
+                    titre = nomSpectacle,
+                    date = DateTime.Now,
+                    total = billets,
+                };
+                return TotaBilletsDTO;
+            }catch(Exception ex)
+            {
+                Console.WriteLine("erreur: "+ ex.Message);
+                return null;
+            }
+        }
     }
 }

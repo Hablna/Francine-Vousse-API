@@ -47,10 +47,17 @@ namespace Vousse.API.Controllers
         }
 
         [HttpGet]
+        public TotalBillets_DTO GetTotalBillets(int id)
+        {
+            return _spectacleService.GetTotalBillets(id);
+        }
+
+        [HttpGet]
         public IEnumerable<statistiques_DTO> GetStatistiques(int debutSaison, int finSaison)
         {
             return _spectacleService.GetStatistiques(debutSaison, finSaison);
         }
-        //reste celui des chevauchements
+        
+
     }
 }

@@ -13,7 +13,7 @@ namespace Vousse.WPF.spectacle
         public Client()
         {
             var builder = new ConfigurationBuilder();
-            builder.AddJsonFile("C:\\Users\\habib\\source\\repos\\Vousse\\Vousse.WPF\\appsettings.json", optional: false, reloadOnChange: false);
+            builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
             var config = builder.Build();
 
             _httpClient = new HttpClient();
