@@ -345,6 +345,7 @@ namespace Vousse.Service
             }
         }
 
+        //Méthode pour rattrapage
         public TotalBillets_DTO GetTotalBillets(int Id)
         {
             try
